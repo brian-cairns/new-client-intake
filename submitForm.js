@@ -1,6 +1,6 @@
 let submit = document.getElementById('submit')
 console.log(submit)
-const formName = 'consultationFeeSummary'
+const formName = 'newClientIntake'
 console.log('form: ' + formName)
 let newForm = {}
 
@@ -23,23 +23,11 @@ dob.addEventListener('change', (e) => {
   console.log(newForm.dob);
 })
 
-document.getElementById('clientAge').innerHTML = getAge(intakeDate, dob)
-
-function getAge(date, dob) {
-  let age = 0
-  const dobArray = dob.parse('/')
-  const today = new Date;
-  let year = today.getFullYear()
-  let month = today.getMonth() + 1;
-  let day = today.getDate()
-  if (month > dobArray[0]) { age = year - dobArray[2] - 1 } 
-  if (month !== dobArray[0]) {age = year - dobArray[2]}
-  else {
-    if (day => dobArray[1]) { age = year - dobArray[2] }
-    else {age = year - dobArray[2] + 1}
-  }
-  return age
-}
+let age = document.querySelector('input#age')
+age.addEventListener('change', (e) => {
+	newForm.age = e.target.value;
+  console.log(newForm.age);
+})
 
 let grade = document.querySelector('input#grade')
 grade.addEventListener('change', (e) => {
@@ -71,10 +59,10 @@ diagnosis.addEventListener('change', (e) => {
   console.log(newForm.diagnosis);
 })
 
-let nextSteps1 = document.querySelector('input#nextSteps1')
-nextSteps1.addEventListener('change', (e) => {
-	newForm.nextSteps1 = e.target.value;
-  console.log(newForm.nextSteps1);
+let sensoryNeeds = document.querySelector('input#sensoryNeeds')
+sensoryNeeds.addEventListener('change', (e) => {
+	newForm.sensoryNeeds = e.target.value;
+  console.log(newForm.sensoryNeeds1);
 })
 
 let strengths = document.querySelector('input#strengths')
@@ -93,18 +81,6 @@ let medicalConditions = document.querySelector('input#medicalConditions')
 medicalConditions.addEventListener('change', (e) => {
 	newForm.medicalConditions = e.target.value;
   console.log(newForm.medicalConditions);
-})
-
-let parentalConcern3 = document.querySelector('input#parentalConcern3')
-parentalConcern3.addEventListener('change', (e) => {
-	newForm.parentalConcern3 = e.target.value;
-  console.log(newForm.parentalConcern3);
-})
-
-let resolution3 = document.querySelector('input#resolution3')
-resolution3.addEventListener('change', (e) => {
-	newForm.resolution3 = e.target.value;
-  console.log(newForm.resolution3);
 })
 
 let services = document.querySelector('input#services')
@@ -137,10 +113,14 @@ caregiverSignature.addEventListener('change', (e) => {
     console.log(newForm.caregiverSignature)
 })
     
-document.getElementById('todaysDate') = newForm.intakeDate
+let todaysDate = document.getElementById('todaysDate') 
+todaysDate.addEventListener('change', (e) => {
+  newForm.todaysDate = e.target.value;
+  console.log(newForm.todaysDate)
+})
 
 document.getElementById('submit').addEventListener("click", async (event) => {
-  submitForm(newForm, 'consultationFeeSummary')
+  submitForm(newForm, 'newClientIntake')
 })
 
 async function submitForm(data, form) {
