@@ -101,7 +101,7 @@ hrsOfSupport.addEventListener('change', (e) => {
     console.log(newForm.hrsOfSupport)
 })
     
-let notes = document.querySelector('input#notes')
+let notes = document.getElementById('notes')
 notes.addEventListener('change', (e) => {
     newForm.notes = e.target.value;
     console.log(newForm.notes)
