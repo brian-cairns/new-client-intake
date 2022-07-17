@@ -83,10 +83,10 @@ medicalConditions.addEventListener('change', (e) => {
   console.log(newForm.medicalConditions);
 })
 
-let services = document.querySelector('input#services')
-services.addEventListener('change', (e) => {
-	newForm.services = e.target.value;
-  console.log(newForm.nextSteps1);
+let intake_services = document.querySelector('input#intake_services')
+intake_services.addEventListener('change', (e) => {
+	newForm.intake_services = e.target.value;
+  console.log(newForm.intake_services);
 })
 
 let availability = document.querySelector('input#availability')
@@ -95,10 +95,10 @@ availability.addEventListener('change', (e) => {
     console.log(newForm.availability)
 })
 
-let hrsOfSupport = document.querySelector('input#hrsOfSupport')
-hrsOfSupport.addEventListener('change', (e) => {
-    newForm.hrsOfSupport = e.target.value;
-    console.log(newForm.hrsOfSupport)
+let hrsOfServices = document.querySelector('input#hrsOfServices')
+hrsOfServices.addEventListener('change', (e) => {
+    newForm.hrsOfServices = e.target.value;
+    console.log(newForm.hrsOfServices)
 })
     
 let notes = document.getElementById('notes')
