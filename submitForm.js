@@ -3,11 +3,23 @@ console.log(submit)
 const formName = 'newClientIntake'
 console.log('form: ' + formName)
 let newForm = {}
+let newClient = {}
+
+class Cargiver {
+  constructor(name, phone, email) {
+    this.name = name;
+    this.phone = phone;
+    this.email = email;
+  }
+}
+
+newClient.caregiver = new Cargiver()
 
 let clientName = document.querySelector('input#clientName')
 clientName.addEventListener('change', (e) => {
 	console.log('changed')
 	newForm.clientName = e.target.value;
+  newClient.clientName = e.target.value;
   console.log(newForm.clientName);
   })
   
@@ -20,6 +32,7 @@ intakeDate.addEventListener('change', (e) => {
 let dob = document.querySelector('input#dob')
 dob.addEventListener('change', (e) => {
 	newForm.dob = e.target.value;
+  newClient.dob = e.target.event
   console.log(newForm.dob);
 })
 
@@ -38,18 +51,21 @@ grade.addEventListener('change', (e) => {
 let caregiverName = document.querySelector('input#caregiverName')
 caregiverName.addEventListener('change', (e) => {
 	newForm.caregiverName = e.target.value;
+  newClient.caregiver.name = e.target.value;
   console.log(newForm.caregiverName);
 })
 
 let caregiverPhone = document.querySelector('input#caregiverPhone')
 caregiverPhone.addEventListener('change', (e) => {
 	newForm.caregiverPhone = e.target.value;
+  newClient.caregiver.phone = e.target.value;
   console.log(newForm.caregiverPhone);
 })
 
 let caregiverEmail = document.querySelector('input#caregiverEmail')
 caregiverEmail.addEventListener('change', (e) => {
 	newForm.caregiverEmail = e.target.value;
+  newClient.caregiver.email = e.target.value;
   console.log(newForm.caregiverEmail);
 })
 
@@ -86,6 +102,7 @@ medicalConditions.addEventListener('change', (e) => {
 let intake_services = document.querySelector('input#intake_services')
 intake_services.addEventListener('change', (e) => {
 	newForm.intake_services = e.target.value;
+  newClient.services = e.target.value;
   console.log(newForm.intake_services);
 })
 
@@ -98,6 +115,7 @@ availability.addEventListener('change', (e) => {
 let hrsOfServices = document.querySelector('input#hrsOfServices')
 hrsOfServices.addEventListener('change', (e) => {
     newForm.hrsOfServices = e.target.value;
+    newClient.hrsOfServices = e.target.value
     console.log(newForm.hrsOfServices)
 })
     
@@ -121,6 +139,7 @@ todaysDate.addEventListener('change', (e) => {
 
 document.getElementById('submit').addEventListener("click", async (event) => {
   submitForm(newForm, 'newClientIntake')
+  createClient(newClient)
 })
 
 async function submitForm(data, form) {
@@ -147,6 +166,28 @@ async function submitForm(data, form) {
     .catch((err) => showError(err))
 }
 
+async function submitForm(data) {
+  const document = {
+    'data': data
+  }
+  console.log(document)
+  fetch('https://pffm.azurewebsites.net/client/newClient', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin" : "*"
+    },
+    body: JSON.stringify(document)
+  })
+    .then((response) => {
+      if (response.status == 200) {
+      showSuccess()
+      } else {
+        showError(response.body)
+      }
+    })
+    .catch((err) => showError(err))
+}
 
 function showSuccess() {
     document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
