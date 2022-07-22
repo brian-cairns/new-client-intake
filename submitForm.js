@@ -139,6 +139,13 @@ todaysDate.addEventListener('change', (e) => {
 
 document.getElementById('submit').addEventListener("click", async (event) => {
   submitForm(newForm, 'newClientIntake')
+  newClient.counselor = 'undetermined';
+  newClient.familyTrainer = 'undetermined'
+  newClient.hrsUsed = 0;
+  newClient.treatmentPlan = 'required'
+  newClient.familyTreatmentPlan = 'required'
+  newClient.nextReviewDate = 'unset'
+  newClient.sessions = [];
   createClient(newClient)
 })
 
