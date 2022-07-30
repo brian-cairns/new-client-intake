@@ -3,23 +3,11 @@ console.log(submit)
 const formName = 'newClientIntake'
 console.log('form: ' + formName)
 let newForm = {}
-let newClient = {}
-
-class Cargiver {
-  constructor(name, phone, email) {
-    this.name = name;
-    this.phone = phone;
-    this.email = email;
-  }
-}
-
-newClient.caregiver = new Cargiver()
 
 let clientName = document.querySelector('input#clientName')
 clientName.addEventListener('change', (e) => {
 	console.log('changed')
 	newForm.clientName = e.target.value;
-  newClient.clientName = e.target.value;
   console.log(newForm.clientName);
   })
   
@@ -32,7 +20,6 @@ intakeDate.addEventListener('change', (e) => {
 let dob = document.querySelector('input#dob')
 dob.addEventListener('change', (e) => {
 	newForm.dob = e.target.value;
-  newClient.dob = e.target.event
   console.log(newForm.dob);
 })
 
@@ -51,21 +38,18 @@ grade.addEventListener('change', (e) => {
 let caregiverName = document.querySelector('input#caregiverName')
 caregiverName.addEventListener('change', (e) => {
 	newForm.caregiverName = e.target.value;
-  newClient.caregiver.name = e.target.value;
   console.log(newForm.caregiverName);
 })
 
 let caregiverPhone = document.querySelector('input#caregiverPhone')
 caregiverPhone.addEventListener('change', (e) => {
 	newForm.caregiverPhone = e.target.value;
-  newClient.caregiver.phone = e.target.value;
   console.log(newForm.caregiverPhone);
 })
 
 let caregiverEmail = document.querySelector('input#caregiverEmail')
 caregiverEmail.addEventListener('change', (e) => {
 	newForm.caregiverEmail = e.target.value;
-  newClient.caregiver.email = e.target.value;
   console.log(newForm.caregiverEmail);
 })
 
@@ -99,11 +83,10 @@ medicalConditions.addEventListener('change', (e) => {
   console.log(newForm.medicalConditions);
 })
 
-let intake_services = document.querySelector('input#intake_services')
-intake_services.addEventListener('change', (e) => {
-	newForm.intake_services = e.target.value;
-  newClient.services = e.target.value;
-  console.log(newForm.intake_services);
+let services = document.querySelector('input#services')
+services.addEventListener('change', (e) => {
+	newForm.services = e.target.value;
+  console.log(newForm.services);
 })
 
 let availability = document.querySelector('input#availability')
@@ -115,7 +98,6 @@ availability.addEventListener('change', (e) => {
 let hrsOfServices = document.querySelector('input#hrsOfServices')
 hrsOfServices.addEventListener('change', (e) => {
     newForm.hrsOfServices = e.target.value;
-    newClient.hrsOfServices = e.target.value
     console.log(newForm.hrsOfServices)
 })
     
@@ -139,14 +121,10 @@ todaysDate.addEventListener('change', (e) => {
 
 document.getElementById('submit').addEventListener("click", async (event) => {
   submitForm(newForm, 'newClientIntake')
-  newClient.counselor = 'undetermined';
-  newClient.familyTrainer = 'undetermined'
-  newClient.hrsUsed = 0;
-  newClient.treatmentPlan = 'required'
-  newClient.familyTreatmentPlan = 'required'
-  newClient.nextReviewDate = 'unset'
-  newClient.sessions = [];
-  createClient(newClient)
+  sessionStorage.setItem('userName', newForm.clientName)
+  updateClient(newForm)
+  const message = '<p>Complete the <a href="/forms/new-client-intake-form">Client Intake Form</a></p>'
+  removeNotice(newForm.clientName, message)
 })
 
 async function submitForm(data, form) {
@@ -173,29 +151,44 @@ async function submitForm(data, form) {
     .catch((err) => showError(err))
 }
 
-async function submitForm(data) {
-  const document = {
-    'data': data
-  }
-  console.log(document)
-  fetch('https://pffm.azurewebsites.net/client/newClient', {
+async function updateClient(clientData) {
+	console.log(clientData)
+  const document = { data: clientData }
+  fetch('https://pffm.azurewebsites.net/updateClient', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin" : "*"
+      "Access-Control-Allow-Origin": "*"
     },
     body: JSON.stringify(document)
   })
-    .then((response) => {
-      if (response.status == 200) {
-      showSuccess()
-      } else {
-        showError(response.body)
-      }
-    })
-    .catch((err) => showError(err))
+    .then(() => console.log('resolved'))
+    .catch(console.error)
 }
 
+async function removeNotice(name, message) {
+  const url = 'https://pffm.azurewebsites.net/notices'
+  let data = {
+  			clientName: name,
+        notice: message
+        }
+   fetch(url, {
+    method: "PUT",
+    headers: {
+    	"Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    },
+    body: JSON.stringify(data)
+  })
+    .then((response) => {
+      if(response != 500 || response != 403) {console.log('deleted', sessionStorage.getItem('userName'))} 
+      //location.href = 'https://phoenix-freedom-foundation-backend.webflow.io/client-portal'
+    })
+    .catch(console.error)
+}
+
+// post Notice to manager
+  
 function showSuccess() {
     document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
 }
