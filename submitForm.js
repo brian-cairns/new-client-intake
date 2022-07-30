@@ -197,3 +197,10 @@ function showError(err) {
     console.error
     document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
 }
+
+let print = document.getElementById('print')
+print.addEventListener('click', (e) => {
+  let user = newForm.clientName
+  sessionStorage.setItem('user', user)
+  location.href = 'phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form'
+})
