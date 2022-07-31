@@ -127,6 +127,13 @@ document.getElementById('submit').addEventListener("click", async (event) => {
   removeNotice(newForm.clientName, message)
 })
 
+let printForm = document.getElementById('printToPDF')
+printForm.style.display = 'none'
+
+document.getElementById('submit').addEventListener("click", async (event) => {
+  submitForm(newForm, formName)
+})
+
 async function submitForm(data, form) {
   const document = {
     'form': form,
@@ -141,15 +148,34 @@ async function submitForm(data, form) {
     },
     body: JSON.stringify(document)
   })
-    .then((response) => {
-      if (response.status == 200) {
-      showSuccess()
-      } else {
-        showError(response.body)
-      }
-    })
+    .then(response => response.json())
+    .then(data => respond(data)) 
     .catch((err) => showError(err))
 }
+
+function respond(data) {
+  let formId = data.formId
+  if (formId) {
+    showSuccess(formId) 
+  } else {
+    showError(data.error)
+  }
+}
+
+function showSuccess(formId) {
+  document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
+  printForm.style.display = 'inline';
+  printForm.addEventListener('click', (e) => {
+  location.href = `phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?formId=${formId}`
+  })
+}
+
+
+function showError(err) {
+    console.error
+    document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
+}
+
 
 async function updateClient(clientData) {
 	console.log(clientData)
@@ -189,18 +215,3 @@ async function removeNotice(name, message) {
 
 // post Notice to manager
   
-function showSuccess() {
-    document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
-}
-
-function showError(err) {
-    console.error
-    document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
-}
-
-let print = document.getElementById('print')
-print.addEventListener('click', (e) => {
-  let user = newForm.clientName
-  sessionStorage.setItem('user', user)
-  location.href = 'phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form'
-})
