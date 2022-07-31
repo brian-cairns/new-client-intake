@@ -118,10 +118,6 @@ document.getElementById('submit').addEventListener("click", async (event) => {
 let printForm = document.getElementById('printToPDF')
 printForm.style.display = 'none'
 
-document.getElementById('submit').addEventListener("click", async (event) => {
-  submitForm(newForm, formName)
-})
-
 async function submitForm(data, form) {
   const document = {
     'form': form,
