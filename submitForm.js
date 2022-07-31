@@ -106,18 +106,6 @@ notes.addEventListener('change', (e) => {
     newForm.notes = e.target.value;
     console.log(newForm.notes)
 })
-    
-let caregiverSignature = document.querySelector('input#caregiverSignature')
-caregiverSignature.addEventListener('change', (e) => {
-    newForm.caregiverSignature = e.target.value;
-    console.log(newForm.caregiverSignature)
-})
-    
-let todaysDate = document.getElementById('todaysDate') 
-todaysDate.addEventListener('change', (e) => {
-  newForm.todaysDate = e.target.value;
-  console.log(newForm.todaysDate)
-})
 
 document.getElementById('submit').addEventListener("click", async (event) => {
   submitForm(newForm, 'newClientIntake')
