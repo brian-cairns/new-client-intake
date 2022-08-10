@@ -164,8 +164,11 @@ function showError(err) {
 
 
 async function updateClient(clientData) {
-  console.log(clientData)
-  const document = { data: clientData }
+	console.log(clientData)
+  const document = {
+  									data: clientData,
+  									clientName: clientData.clientName
+                    }
   fetch('https://pffm.azurewebsites.net/updateClient', {
     method: "POST",
     headers: {
@@ -181,8 +184,8 @@ async function updateClient(clientData) {
 async function removeNotice(name, message) {
   const url = 'https://pffm.azurewebsites.net/notices'
   let data = {
-  	'to': name,
-        'message': message
+  			clientName: name,
+        notice: message
         }
    fetch(url, {
     method: "PUT",
@@ -199,5 +202,4 @@ async function removeNotice(name, message) {
     .catch(console.error)
 }
 
-// post Notice to manager
   
