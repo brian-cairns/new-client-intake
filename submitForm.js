@@ -138,8 +138,8 @@ async function submitForm(data, form) {
 }
 
 function respond(data) {
-  let formId = data.formId
-  if (formId) {
+  let id = data.key
+  if (id) {
     showSuccess(formId) 
   } else {
     showError(data.error)
@@ -150,7 +150,7 @@ function showSuccess(formId) {
   document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
   printForm.style.display = 'inline';
   printForm.addEventListener('click', (e) => {
-  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?formId=${formId}`
+  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?formId=${id}`
   })
 }
 
