@@ -3,12 +3,14 @@ console.log(submit)
 const formName = 'newClientIntake'
 console.log('form: ' + formName)
 let newForm = {}
+let client = ''
 
 let clientName = document.querySelector('input#clientName')
 clientName.addEventListener('change', (e) => {
 	console.log('changed')
 	newForm.clientName = e.target.value;
   console.log(newForm.clientName);
+  client = newForm.clientName
   })
   
 let intakeDate = document.querySelector('input#intakeDate')
@@ -150,7 +152,7 @@ function showSuccess(formId) {
   document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
   printForm.style.display = 'inline';
   printForm.addEventListener('click', (e) => {
-  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?formId=${id}`
+  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?id=${id}`
   })
 }
 
