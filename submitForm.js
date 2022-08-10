@@ -142,13 +142,13 @@ async function submitForm(data, form) {
 function respond(data) {
   let id = data.key
   if (id) {
-    showSuccess(formId) 
+    showSuccess(id) 
   } else {
     showError(data.error)
   }
 }
 
-function showSuccess(formId) {
+function showSuccess(id) {
   document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
   printForm.style.display = 'inline';
   printForm.addEventListener('click', (e) => {
@@ -164,7 +164,7 @@ function showError(err) {
 
 
 async function updateClient(clientData) {
-	console.log(clientData)
+  console.log(clientData)
   const document = { data: clientData }
   fetch('https://pffm.azurewebsites.net/updateClient', {
     method: "POST",
@@ -181,8 +181,8 @@ async function updateClient(clientData) {
 async function removeNotice(name, message) {
   const url = 'https://pffm.azurewebsites.net/notices'
   let data = {
-  			clientName: name,
-        notice: message
+  	'to': name,
+        'message': message
         }
    fetch(url, {
     method: "PUT",
