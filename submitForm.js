@@ -117,8 +117,6 @@ document.getElementById('submit').addEventListener("click", async (event) => {
   removeNotice(newForm.clientName, message)
 })
 
-let printForm = document.getElementById('printToPDF')
-printForm.style.display = 'none'
 
 async function submitForm(data, form) {
   const document = {
@@ -150,9 +148,7 @@ function respond(data) {
 
 function showSuccess(id) {
   document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
-  printForm.style.display = 'inline';
-  printForm.addEventListener('click', (e) => {
-  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/new-client-intake-form?id=${id}`
+  sendNotification(id, 'admin', 'family', 'urgent')
   })
 }
 
@@ -166,8 +162,8 @@ function showError(err) {
 async function updateClient(clientData) {
 	console.log(clientData)
   const document = {
-  									data: clientData,
-  									clientName: clientData.clientName
+  			data: clientData,
+  			clientName: clientData.clientName
                     }
   fetch('https://pffm.azurewebsites.net/updateClient', {
     method: "POST",
@@ -184,7 +180,7 @@ async function updateClient(clientData) {
 async function removeNotice(name, message) {
   const url = 'https://pffm.azurewebsites.net/notices'
   let data = {
-  			clientName: name,
+  	clientName: name,
         notice: message
         }
    fetch(url, {
@@ -202,4 +198,27 @@ async function removeNotice(name, message) {
     .catch(console.error)
 }
 
+async function sendNotification(id, recipient, type, priority) {
+  let message = `A new client has completed a <br/><a href=phoenix-freedom-foundation-backend.webflow.io/completed-forms/iiss-session-note?id=${id}>Client Intake Form</a>`. Please assign a staff member to complete the assessment'
+  console.log(message)
+  const url = 'https://pffm.azurewebsites.net/notices'
+  let notification = {
+    'name': recipient,
+    'notice': message,
+    'type': type,
+    'priority': priority
+  }
+  const header = {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin" : "*"
+  }
+  
+  fetch(url, {
+    method: "POST",
+    headers: header,
+    body: JSON.stringify(notification)
+  })
+    .then(() => console.log('notice sent'))
+    .catch(console.error)
+}
   
